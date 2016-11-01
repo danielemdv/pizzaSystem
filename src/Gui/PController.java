@@ -109,6 +109,40 @@ public class PController {
         MainMenu.setVisible(true);
     }
     
+    //Method called from RegisterClientFrame when registerButton is pressed.
+    public void registerClientRegisterButton(String name, String address, String phone){
+        /*
+        We need to tell the dbController to add the new client and make sure if any exception is thrown that
+        the user is correctly notified.
+        */
+        
+        //Trim the strings
+        name = name.trim();
+        address = address.trim();
+        phone = phone.trim();
+        
+        //Check that none of the strings are empty strings and that the phone length is at least 8 digits (including spaces)
+        if(name.equals("") || address.equals("") || (phone.length() < 8))
+        {
+            JOptionPane.showMessageDialog(RegisterClient, "Los campos no pueden estar vacíos y el teléfono debe tener mínimo 8 dígitos", "CUIDADO" , JOptionPane.INFORMATION_MESSAGE);
+        }
+        else if(dbController.addClient(name, address, phone))
+        {
+            System.out.println("Client registered succesfully");
+            JOptionPane.showMessageDialog(RegisterClient, "Cliente dado de alta exitosamente", "EXITO" , JOptionPane.INFORMATION_MESSAGE);
+            RegisterClient.clearFields();
+            RegisterClient.setVisible(false);
+            MainMenu.setVisible(true);
+        }
+        else
+        {
+            System.out.println("ERROR: Client registered unsuccesfully!!!");
+            JOptionPane.showMessageDialog(RegisterClient, "El cliente no pudo ser dado de alta", "ERROR" , JOptionPane.ERROR_MESSAGE);
+            
+        }
+        
+    }
+    
     
     //Method to clear fields and set all frames invisible.
     private void centerAndDisappearFrames(){
