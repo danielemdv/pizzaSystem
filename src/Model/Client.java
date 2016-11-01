@@ -37,6 +37,32 @@ public class Client {
 
     //Methods
     
+    /*
+    Method to check if the information passed is valid for a Client object or not.
+    */
+    public static boolean isValidClient(String name, String address, String phone){
+        boolean res = false;
+        
+        //trim the strings
+        name = name.trim();
+        address = address.trim();
+        
+        //remove all the spaces from phone
+        phone = phone.replaceAll("\\s","");
+        
+        
+        //If any of the fields are empty or phone is less than 8 digits long, it's not valid
+        if(!(name.equals("") || address.equals("") || (phone.length() < 8)))
+        {
+            //Valid fields
+            res = true;
+        }
+        return res;
+    }
+    
+    
+    
+    
     //Returns an int to make sure order was placed properly. A proper order should return 0
     public int placeOrder(Order order){
         int res = 0;
