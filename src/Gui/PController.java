@@ -6,6 +6,7 @@
 package Gui;
 import javax.swing.*;
 import DB.DBController;
+import Model.Client;
 import java.util.ArrayList;
 
 /**
@@ -116,16 +117,18 @@ public class PController {
         the user is correctly notified.
         */
         
-        //Trim the strings
-        name = name.trim();
-        address = address.trim();
-        phone = phone.trim();
+        //Check if the data is consistent with the model
+        Object[] dat = Client.isValidClient(name, address, phone);
+        name = (String)(dat[1]);
+        address = (String)(dat[2]);
+        phone = (String)(dat[3]);
         
-        //Check that none of the strings are empty strings and that the phone length is at least 8 digits (including spaces)
-        if(name.equals("") || address.equals("") || (phone.length() < 8))
+        //If data is not valid, then inform the user.
+        if(!((boolean)(dat[0])))
         {
-            JOptionPane.showMessageDialog(RegisterClient, "Los campos no pueden estar vacíos y el teléfono debe tener mínimo 8 dígitos", "CUIDADO" , JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(RegisterClient, "Los campos no pueden estar vacíos y el teléfono debe tener mínimo 8 dígitos sin contar espacios.", "CUIDADO" , JOptionPane.INFORMATION_MESSAGE);
         }
+        //Data is valid, try to addClient to the DB
         else if(dbController.addClient(name, address, phone))
         {
             System.out.println("Client registered succesfully");
@@ -134,13 +137,12 @@ public class PController {
             RegisterClient.setVisible(false);
             MainMenu.setVisible(true);
         }
+        //Client not succesfully added to the DB
         else
         {
             System.out.println("ERROR: Client registered unsuccesfully!!!");
             JOptionPane.showMessageDialog(RegisterClient, "El cliente no pudo ser dado de alta", "ERROR" , JOptionPane.ERROR_MESSAGE);
-            
         }
-        
     }
     
     

@@ -39,9 +39,13 @@ public class Client {
     
     /*
     Method to check if the information passed is valid for a Client object or not.
+    It returns a Object array of type: {boolean, String, String, String}.
+    The first boolean tells us if the Client information is valid, the Strings are the now
+    modified name, address and phone strings which are now cleaned up, or empty Strings if the client is not valid.
     */
-    public static boolean isValidClient(String name, String address, String phone){
-        boolean res = false;
+    public static Object[] isValidClient(String name, String address, String phone){
+        
+        Object[] res;
         
         //trim the strings
         name = name.trim();
@@ -50,13 +54,17 @@ public class Client {
         //remove all the spaces from phone
         phone = phone.replaceAll("\\s","");
         
-        
         //If any of the fields are empty or phone is less than 8 digits long, it's not valid
         if(!(name.equals("") || address.equals("") || (phone.length() < 8)))
         {
             //Valid fields
-            res = true;
+            res = new Object[]{true, name, address, phone};
         }
+        else
+        {
+            res = new Object[]{false, "","",""};
+        }
+        
         return res;
     }
     
