@@ -55,6 +55,7 @@ public class PController {
         
     }
     
+    //--------------LOG IN FRAME---------------------------------------------------
     
     //Method called from LogInFrame
     public void logIn(String user, char[] password){
@@ -73,7 +74,6 @@ public class PController {
             
             //Show main menu frame.
             MainMenu.setVisible(true);
-            
         }
         else
         {
@@ -88,6 +88,11 @@ public class PController {
         LogIn.setVisible(true);
     }
     
+    //-------------------END LOG IN FRAME----------------------------------------
+    
+    
+    //--------------------------MAIN MENU FRAME------------------------------------
+    
     //Method called from MainMenu when RegisterClientButton is pressed
     public void mainMenuRegisterClientButton(){
         /*
@@ -98,6 +103,13 @@ public class PController {
         RegisterClient.setVisible(true);
         
     }
+    
+    
+    
+    //--------------------------END  MAIN MENU FRAME--------------------------------------
+    
+    
+    //--------------------------REGISTER CLIENT FRAME---------------------------------------
     
     //Method called from RegisterClientFrame when backButton is pressed.
     public void registerClientBackButton(){
@@ -133,6 +145,8 @@ public class PController {
         {
             System.out.println("Client registered succesfully");
             JOptionPane.showMessageDialog(RegisterClient, "Cliente dado de alta exitosamente", "EXITO" , JOptionPane.INFORMATION_MESSAGE);
+            
+            //Disappear Frame and go back to main menu
             RegisterClient.clearFields();
             RegisterClient.setVisible(false);
             MainMenu.setVisible(true);
@@ -141,9 +155,11 @@ public class PController {
         else
         {
             System.out.println("ERROR: Client registered unsuccesfully!!!");
-            JOptionPane.showMessageDialog(RegisterClient, "El cliente no pudo ser dado de alta", "ERROR" , JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(RegisterClient, "El cliente no pudo ser dado de alta\nRecuerde que dos clientes no pueden tener el mismo teléfono", "ERROR" , JOptionPane.ERROR_MESSAGE);
         }
     }
+    
+    //--------------------------END REGISTER CLIENT FRAME--------------------------------------
     
     
     //Method to clear fields and set all frames invisible.
