@@ -22,10 +22,13 @@ import java.sql.*;
 public class PController {
     
     //Declaration of DataBase Controller
-    DBController dbController;
+    private DBController dbController;
     
     //ArrayList to hold Frames to be able to batch call their methods.
-    ArrayList<JFrame> frames;
+    private ArrayList<JFrame> frames;
+    
+    //Declaration of int to store value of the ID of the current client that is being edited.
+    private int currentClientIDToEdit;
     
     //Declaration of all JFrame objects in the GUI
     private LogInFrame LogIn;
@@ -221,6 +224,7 @@ public class PController {
             int clientID = (Integer)(ClientManager.clientTable.getModel().getValueAt(row, 0));
             Client client = dbController.selectClientByID(clientID); //Query the database for the given client.
             fillEditClientFrame(client); //set EditClient's fields the same as the client's instance attributes.
+            this.currentClientIDToEdit = client.getUid(); //Store the reference to the Client we want to edit in this global variable.
             
             //Disappear ClientManager
             ClientManager.setVisible(false);
@@ -260,19 +264,45 @@ public class PController {
         EditClient.clearFields();
         
         clientManagerResetAndClear();
-        ClientManager.setVisible(true); 
+        ClientManager.setVisible(true);
     }
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    public void editClientEditButton(String name, String address, String phone){
+        /*
+        Check that the information is valid for a client. Then execute the update query.
+        */
+        
+        //Validate the information with the model.
+        Object[] resClient = Client.isValidClient(name,address,phone);
+        
+        if(!(boolean)(resClient[0])) //if client is not valid, inform the user.
+        {
+             JOptionPane.showMessageDialog(EditClient, "Los campos no pueden estar vacíos y el teléfono debe tener mínimo 8 dígitos sin contar espacios.", "CUIDADO" , JOptionPane.INFORMATION_MESSAGE);
+        }
+        else //The information is valid and we can proceed to update the user.
+        {
+            //Run the database update
+            boolean updateFlag = dbController.updateClient(new Client(currentClientIDToEdit, (String)(resClient[1]), (String)(resClient[2]), (String)(resClient[3])));
+            
+            if(updateFlag) //Client was updated succesfully.
+            {
+                JOptionPane.showMessageDialog(EditClient, "El cliente fue modificado exitosamente.", "EXITO" , JOptionPane.INFORMATION_MESSAGE);
+                
+                //Take user back to ClientManager
+                EditClient.clearFields();
+                EditClient.setVisible(false);
+                
+                clientManagerResetAndClear();
+                ClientManager.setVisible(true);
+            }
+            else //some error. Client was not updated.
+            {
+                JOptionPane.showMessageDialog(EditClient, "El cliente no fue modificado.", "ERROR" , JOptionPane.ERROR_MESSAGE);
+            }  
+        }
+        
+    }
     
     
     

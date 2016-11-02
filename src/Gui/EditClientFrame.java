@@ -113,7 +113,7 @@ public class EditClientFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        
+        controller.editClientEditButton(nameTextField.getText(),addressTextField.getText(),phoneTextField.getText());
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
