@@ -5,9 +5,12 @@
  */
 package Gui;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import DB.DBController;
 import Model.Client;
 import java.util.ArrayList;
+import java.util.Vector;
+import java.sql.*;
 
 /**
  *
@@ -28,6 +31,7 @@ public class PController {
     private LogInFrame LogIn;
     private MainMenuFrame MainMenu;
     private RegisterClientFrame RegisterClient;
+    private ClientManagerFrame ClientManager;
     
     
     //Constructor method
@@ -41,16 +45,18 @@ public class PController {
         LogIn = new LogInFrame(this);
         MainMenu = new MainMenuFrame(this);
         RegisterClient = new RegisterClientFrame(this);
+        ClientManager = new ClientManagerFrame(this);
         
         //Adding the JFrames to the ArrayList
         frames.add(LogIn);
         frames.add(MainMenu);
         frames.add(RegisterClient);
+        frames.add(ClientManager);
         
         //Setting all JFrames invisible except for the Log In Frame
         centerAndDisappearFrames();
 
-        
+        //Appear LogInFrame
         LogIn.setVisible(true);
         
     }
@@ -102,6 +108,17 @@ public class PController {
         MainMenu.setVisible(false);
         RegisterClient.setVisible(true);
         
+    }
+    
+    //Method called from MainMenu when ClientManagerButton is pressed
+    public void mainMenuClientManagerButton(){
+        /*
+        Set MainMenu invisible, populate ClientManager's table with all clients. Set ClientManager visible.
+        */
+        
+        MainMenu.setVisible(false);
+        clientManagerResetTable();
+        ClientManager.setVisible(true);
     }
     
     
@@ -162,12 +179,53 @@ public class PController {
     //--------------------------END REGISTER CLIENT FRAME--------------------------------------
     
     
+    
+    
+    //--------------------------CLIENT MANAGER FRAME----------------------------------------
+    
+    
+    //Method to populate ClientManager's JTable with all the clients in the DB
+    public void clientManagerResetTable(){
+        String[] columnNames = {"ID", "Nombre", "Direccion", "Telefono"}; //should make a final variable (constant) to call it from
+        
+        ClientManager.setTableModel(buildTableModelFromObjectArray(dbController.selectAllClientsEASY(), columnNames));
+        
+        //Table testing code
+        //JOptionPane.showMessageDialog(null, new JScrollPane(buildTableFromObjectArray(dbController.selectAllClientsEASY(), columnNames)));
+    }
+    
+    //Method called when ClientManager's backButton is pressed
+    public void clientManagerBackButton(){
+        //disappear ClientManager, clear its fields, appear MainMenu
+        ClientManager.setVisible(false);
+        ClientManager.clearFields();
+        MainMenu.setVisible(true);
+    }
+    
+    
+    
+    //--------------------------END CLIENT MANAGER FRAME----------------------------------------
+    
+    
+    
+    
+    
+    
+    //------------------------------HELPER METHODS----------------------------
+    
     //Method to clear fields and set all frames invisible.
     private void centerAndDisappearFrames(){
         for(int i = 0; i < frames.size(); i++){
             frames.get(i).setLocationRelativeTo(null);
             frames.get(i).setVisible(false);
         }
+    }
+    
+    
+    //Helper method that creates a DefaultTableModel given the result of a query in objectArrays
+    //DefaultTableModel(Object[][] rowData, Object[] columnNames)
+    public DefaultTableModel buildTableModelFromObjectArray(Object[][] arr, Object[] columnNames){
+        return new DefaultTableModel(arr, columnNames);
     }
     
     

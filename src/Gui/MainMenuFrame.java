@@ -35,6 +35,7 @@ public class MainMenuFrame extends javax.swing.JFrame {
 
         registerClientButton = new javax.swing.JButton();
         logOutButton = new javax.swing.JButton();
+        clientManagerButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,25 +53,37 @@ public class MainMenuFrame extends javax.swing.JFrame {
             }
         });
 
+        clientManagerButton.setText("Administrar clientes");
+        clientManagerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clientManagerButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(logOutButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(217, Short.MAX_VALUE)
-                .addComponent(registerClientButton)
-                .addGap(206, 206, 206))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(logOutButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(181, 181, 181)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(clientManagerButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(registerClientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(182, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(registerClientButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 387, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(clientManagerButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 344, Short.MAX_VALUE)
                 .addComponent(logOutButton)
                 .addContainerGap())
         );
@@ -86,8 +99,13 @@ public class MainMenuFrame extends javax.swing.JFrame {
         controller.logOut();
     }//GEN-LAST:event_logOutButtonActionPerformed
 
+    private void clientManagerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientManagerButtonActionPerformed
+        controller.mainMenuClientManagerButton();
+    }//GEN-LAST:event_clientManagerButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton clientManagerButton;
     private javax.swing.JButton logOutButton;
     private javax.swing.JButton registerClientButton;
     // End of variables declaration//GEN-END:variables

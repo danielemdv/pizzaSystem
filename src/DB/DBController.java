@@ -111,26 +111,68 @@ public class DBController {
         return res;
     }
     
-    //Method to select all from all clients and return them
-    public ArrayList<Client> selectAllClients(){
-        ArrayList<Client> clients = new ArrayList<>();
-        
-         String sql = "SELECT * FROM client;";
+    //Method to select all from all clients and return the ResultSet of the query
+    public ResultSet selectAllClients(){
+        String sql = "SELECT * FROM client;";
         
         try (Connection conn = connect();
-             Statement stmt  = conn.createStatement();
-             ResultSet rs    = stmt.executeQuery(sql)){
+            Statement stmt  = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)){
             
-            // loop through the result set creating Client instances and add them to the ArrayList
-            while (rs.next()) {
-                Client client = new Client(rs.getInt("id"),rs.getString("name"),rs.getString("address"),rs.getString("phone"));
-                clients.add(client);
-            }
+            return rs;
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null; //Watch out, we're returning null if we had an SQLException!
+        }
+        
+    }
+    
+     //Method to test the feasability of uncomplicating my life and using JTable's following constructor: JTable(Object[][] rowData, Object[] columnNames)
+    public Object[][] selectAllClientsEASY(){
+        int rowNum = 0;
+        int columnNum = 4; //Using a known value
+        Object[][] res;
+        
+        String sqlCount = "select count('id') as num from client;";
+        String sql = "SELECT * FROM client;";
+        
+        //TryCatch section to get the number of clients that will be returned in the query.
+        try (Connection conn = connect();
+            Statement stmt  = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sqlCount)){
+            
+            rowNum = rs.getInt("num"); //Get the number of clients that will be returned.
+            
+            
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-    
-        return clients;
+        
+        
+        res = new Object[rowNum][columnNum];
+        
+        
+        try (Connection conn = connect();
+            Statement stmt  = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)){
+            
+            int currentRow = 0;
+            // loop through the result set
+            while (rs.next()) {
+                
+                for(int i = 1; i <= columnNum; i++){
+                    res[currentRow][i-1] = rs.getObject(i);
+                }
+                currentRow++;
+            }
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null; //Watch out, we're returning null if we had an SQLException!
+        }
+        
+        return res;
     }
     
     

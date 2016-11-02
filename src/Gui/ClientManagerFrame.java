@@ -16,7 +16,7 @@ public class ClientManagerFrame extends javax.swing.JFrame {
     /**
      * Creates new form ClientManagerFrame
      */
-    public ClientManagerFrame(PController controller) {
+    public ClientManagerFrame(PController controller){
         super("Administrar Clientes");
         this.controller = controller;
         initComponents();
@@ -49,15 +49,27 @@ public class ClientManagerFrame extends javax.swing.JFrame {
 
         clientTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Nombre", "Dirección", "Teléfono"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(clientTable);
 
         searchTextField.setToolTipText("");
@@ -69,6 +81,11 @@ public class ClientManagerFrame extends javax.swing.JFrame {
         deleteButton.setText("Eliminar");
 
         backButton.setText("Regresar");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed(evt);
+            }
+        });
 
         idRadioButton.setText("ID");
 
@@ -133,6 +150,10 @@ public class ClientManagerFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        controller.clientManagerBackButton();
+    }//GEN-LAST:event_backButtonActionPerformed
+
     
     private void initRadioButtons(){
         //Add Radio Buttons to the button group
@@ -142,10 +163,19 @@ public class ClientManagerFrame extends javax.swing.JFrame {
         //Select one of the buttons
         phoneRadioButton.setSelected(true);
     }
+    
+    public void clearFields(){
+        searchTextField.setText("");
+        phoneRadioButton.setSelected(true);
+    }
+    
+    public void setTableModel(javax.swing.table.DefaultTableModel model){
+        clientTable.setModel(model);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
-    private javax.swing.JTable clientTable;
+    public javax.swing.JTable clientTable;
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton editButton;
     private javax.swing.JRadioButton idRadioButton;
