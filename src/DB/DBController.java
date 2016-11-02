@@ -176,6 +176,28 @@ public class DBController {
     }
     
     
+    //Method to return a client queried from the db by its ID.
+    public Client selectClientByID(int id){
+        Client client = null;
+        String sql = "Select * from client where id = ?";
+
+        try (Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            
+            if(rs.next()){
+                client = new Client(id, rs.getString("name"), rs.getString("address"), rs.getString("phone"));
+            }
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null; //Watch out, we're returning null if we had an SQLException!
+        }
+        return client;
+    }
+    
+    
     
     
 }

@@ -126,6 +126,7 @@ public class RegisterClientFrame extends javax.swing.JFrame {
         phoneTextField.setText("");
         addressTextField.setText("");
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addressLabel;

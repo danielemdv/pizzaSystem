@@ -21,6 +21,7 @@ public class ClientManagerFrame extends javax.swing.JFrame {
         this.controller = controller;
         initComponents();
         initRadioButtons(); //Set radio buttons in a group and select one.
+        //lockTable(); //Lock the table so the columns cannot be moved and the cells cannot ve edited. //EDIT I think I don't need this anymore.
     }
 
     /**
@@ -70,6 +71,7 @@ public class ClientManagerFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        clientTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(clientTable);
 
         searchTextField.setToolTipText("");
@@ -77,6 +79,11 @@ public class ClientManagerFrame extends javax.swing.JFrame {
         searchButton.setText("Buscar");
 
         editButton.setText("Editar");
+        editButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editButtonActionPerformed(evt);
+            }
+        });
 
         deleteButton.setText("Eliminar");
 
@@ -154,6 +161,10 @@ public class ClientManagerFrame extends javax.swing.JFrame {
         controller.clientManagerBackButton();
     }//GEN-LAST:event_backButtonActionPerformed
 
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        controller.clientManagerEditButton();
+    }//GEN-LAST:event_editButtonActionPerformed
+
     
     private void initRadioButtons(){
         //Add Radio Buttons to the button group
@@ -171,6 +182,11 @@ public class ClientManagerFrame extends javax.swing.JFrame {
     
     public void setTableModel(javax.swing.table.DefaultTableModel model){
         clientTable.setModel(model);
+    }
+    
+    //Apparently I have managed to lock the columns from the generated code.
+    private void lockTable(){
+        clientTable.getTableHeader().setReorderingAllowed(false);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

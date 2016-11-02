@@ -32,6 +32,7 @@ public class PController {
     private MainMenuFrame MainMenu;
     private RegisterClientFrame RegisterClient;
     private ClientManagerFrame ClientManager;
+    private EditClientFrame EditClient;
     
     
     //Constructor method
@@ -46,12 +47,14 @@ public class PController {
         MainMenu = new MainMenuFrame(this);
         RegisterClient = new RegisterClientFrame(this);
         ClientManager = new ClientManagerFrame(this);
+        EditClient = new EditClientFrame(this);
         
         //Adding the JFrames to the ArrayList
         frames.add(LogIn);
         frames.add(MainMenu);
         frames.add(RegisterClient);
         frames.add(ClientManager);
+        frames.add(EditClient);
         
         //Setting all JFrames invisible except for the Log In Frame
         centerAndDisappearFrames();
@@ -202,9 +205,63 @@ public class PController {
         MainMenu.setVisible(true);
     }
     
+    //Method called when ClientManager's editButton is pressed
+    public void clientManagerEditButton(){
+        //Get the table's selected row
+        int row = ClientManager.clientTable.getSelectedRow();
+        
+        //If there is no selected row, inform the user.
+        if(row == -1)
+        {
+            JOptionPane.showMessageDialog(RegisterClient, "Debe seleccionar un cliente primero.", "Cuidado!" , JOptionPane.INFORMATION_MESSAGE);
+        }
+        else
+        {
+            //There is a row selected, we get the Client's ID from the model.
+            int clientID = (Integer)(ClientManager.clientTable.getModel().getValueAt(row, 0));
+            Client client = dbController.selectClientByID(clientID); //Query the database for the given client.
+            fillEditClientFrame(client); //set EditClient's fields the same as the client's instance attributes.
+            
+            //Disappear ClientManager
+            ClientManager.setVisible(false);
+            //Appear EditClient
+            EditClient.setVisible(true);
+        }
+    }
+    
     
     
     //--------------------------END CLIENT MANAGER FRAME----------------------------------------
+    
+    
+    
+    
+    
+     //--------------------------EDIT CLIENT FRAME----------------------------------------
+    
+    public void fillEditClientFrame(Client client){
+        EditClient.fillFields(client.getName(), client.getAddress(), client.getPhone());
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+     //--------------------------END EDIT CLIENT FRAME----------------------------------------
+    
+    
+    
+    
     
     
     
@@ -222,10 +279,18 @@ public class PController {
     }
     
     
-    //Helper method that creates a DefaultTableModel given the result of a query in objectArrays
+    /*Helper method that creates a DefaultTableModel given the result of a query in objectArrays.
+      Also makes all the cells in the model non editable.
+    */
     //DefaultTableModel(Object[][] rowData, Object[] columnNames)
     public DefaultTableModel buildTableModelFromObjectArray(Object[][] arr, Object[] columnNames){
-        return new DefaultTableModel(arr, columnNames);
+        return new DefaultTableModel(arr, columnNames){
+            
+            @Override //Make the cells non editable.
+            public boolean isCellEditable(int row, int column) {
+                 return false;
+            }
+        };
     }
     
     
