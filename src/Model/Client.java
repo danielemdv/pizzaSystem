@@ -14,25 +14,14 @@ public class Client {
     private String address; //In near future this will probably change
     private String phone;
     
-    //Might not need this, but makes sense right now
-    private ArrayList<Order> orders; //EXTERMINATE!!
     
     //Constructor methods
-    Client(int uid, String name, String address, String phone){
+    public Client(int uid, String name, String address, String phone){
         this.uid = uid;
         this.name = name;
         this.address = address;
         this.phone = phone;
         
-    }
-    
-    //WILL DEPRECATE THIS CONSTRUCTOR DUE TO DB UTILIZATION.
-    Client(int uid, String name, String address, String phone, ArrayList<Order> orders){
-        this.uid = uid;
-        this.name = name;
-        this.address = address;
-        this.phone = phone;
-        this.orders = orders;
     }
 
     //Methods

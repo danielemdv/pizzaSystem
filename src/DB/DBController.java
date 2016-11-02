@@ -5,6 +5,8 @@
  */
 package DB;
 import java.sql.*;
+import Model.Client;
+import java.util.ArrayList;
 
 /**
  *
@@ -107,6 +109,28 @@ public class DBController {
             res = false;
         }
         return res;
+    }
+    
+    //Method to select all from all clients and return them
+    public ArrayList<Client> selectAllClients(){
+        ArrayList<Client> clients = new ArrayList<>();
+        
+         String sql = "SELECT * FROM client;";
+        
+        try (Connection conn = connect();
+             Statement stmt  = conn.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+            
+            // loop through the result set creating Client instances and add them to the ArrayList
+            while (rs.next()) {
+                Client client = new Client(rs.getInt("id"),rs.getString("name"),rs.getString("address"),rs.getString("phone"));
+                clients.add(client);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    
+        return clients;
     }
     
     
