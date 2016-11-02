@@ -117,13 +117,19 @@ public class EditClientFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        
+        controller.editClientBackButton();
     }//GEN-LAST:event_backButtonActionPerformed
 
     public void fillFields(String name, String address, String phone){
         nameTextField.setText(name);
         addressTextField.setText(address);
         phoneTextField.setText(phone);
+    }
+    
+    public void clearFields(){
+        nameTextField.setText("");
+        addressTextField.setText("");
+        phoneTextField.setText("");
     }
     
 

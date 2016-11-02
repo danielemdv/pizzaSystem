@@ -229,6 +229,12 @@ public class PController {
         }
     }
     
+    //Method to reset the table and clear fields (should be called when appearing the frame)
+    public void clientManagerResetAndClear(){
+        clientManagerResetTable();
+        ClientManager.clearFields();
+    }
+    
     
     
     //--------------------------END CLIENT MANAGER FRAME----------------------------------------
@@ -239,10 +245,23 @@ public class PController {
     
      //--------------------------EDIT CLIENT FRAME----------------------------------------
     
+    //Method to fill the EditClient frame's fields with the info of the selected client to edit.
     public void fillEditClientFrame(Client client){
         EditClient.fillFields(client.getName(), client.getAddress(), client.getPhone());
     }
     
+    
+    //Method called when EditClient's backButton is pressed.
+    public void editClientBackButton(){
+        /*
+            Dissapear EditClient and clear its fields, refresh ClientManager's table and clear its fields
+        */
+        EditClient.setVisible(false);
+        EditClient.clearFields();
+        
+        clientManagerResetAndClear();
+        ClientManager.setVisible(true); 
+    }
     
     
     

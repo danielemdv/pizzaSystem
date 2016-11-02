@@ -197,6 +197,28 @@ public class DBController {
         return client;
     }
     
+    //Method to update a client's information given the new client object (obviously having the proper ID)
+    public boolean updateClient(Client client){
+        boolean res = true;
+
+        String sql = "UPDATE client SET name = ?, address = ?,  phone = ? WHERE id = ?";
+ 
+        try (Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setString(1, client.getName());
+            pstmt.setString(2, client.getAddress());
+            pstmt.setString(3, client.getPhone());
+            pstmt.setInt(4, client.getUid());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            res = false;
+        }
+        return res;
+    }
+    
+    
+    
     
     
     
