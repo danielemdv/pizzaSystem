@@ -22,7 +22,9 @@ public class DBController {
     //Constructor
     public DBController(){
         //Note, this string is different if we run on windows.
-        url = "jdbc:sqlite:/home/daniel/NetBeansProjects/pizzaSystem/src/DBFiles/pizzaTestDB.db";
+        //url = "jdbc:sqlite:/home/daniel/NetBeansProjects/pizzaSystem/src/DBFiles/pizzaTestDB.db"; //linux
+        
+        url = "jdbc:sqlite:/Users/danielespinosa/Documents/Computacion/Semestre 9/Ingenieria de Software/programacion proyecto/pizzaSystem/src/DBFiles/pizzaTestDB.db"; // MAC
     }
     
     //overloaded constructor to pass a custom path to the database.
