@@ -220,6 +220,26 @@ public class DBController {
     }
     
     
+    //Method to delete a client given his ID.
+    public boolean deleteClientByID(int id){
+        boolean res = true;
+
+        String sql = "DELETE from client WHERE id = ?";
+ 
+        try (Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            res = false;
+        }
+        return res;
+    
+    
+    }
+    
+    
     
     
     

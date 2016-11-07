@@ -233,6 +233,50 @@ public class PController {
         }
     }
     
+    //Called when the ClientManager's deleteButton is pressed.
+    public void clientManagerDeleteButton(){
+        //Get the table's selected row
+        int row = ClientManager.clientTable.getSelectedRow();
+        
+        //If there is no selected row, inform the user.
+        if(row == -1)
+        {
+            JOptionPane.showMessageDialog(RegisterClient, "Debe seleccionar un cliente primero.", "Cuidado!" , JOptionPane.INFORMATION_MESSAGE);
+        }
+        else
+        {
+            //There is a row selected, we get the Client's ID from the model.
+            int clientID = (Integer)(ClientManager.clientTable.getModel().getValueAt(row, 0));
+            
+            Client client = dbController.selectClientByID(clientID); //Query the database for the given client.
+            
+            int optionRes = JOptionPane.showConfirmDialog(ClientManager, "Está seguro que desea eliminar al cliente:\n<html><b>" + client.getName() + "</b></html>", "Eliminar", JOptionPane.YES_NO_OPTION);
+            
+            //Check the option
+            if(optionRes == JOptionPane.YES_OPTION) //delete client.
+            {
+                boolean opFlag = dbController.deleteClientByID(clientID);
+                
+                if(opFlag)
+                {
+                    //Reset the table
+                    clientManagerResetAndClear();
+                    JOptionPane.showMessageDialog(ClientManager, "El cliente ha sido eliminado exitosamente", "Éxito!" , JOptionPane.INFORMATION_MESSAGE);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(ClientManager, "El cliente no pudo ser eliminado, hubo un error.", "Error!" , JOptionPane.ERROR_MESSAGE);
+                }
+                
+                
+            }
+            
+        }
+    }
+    
+    
+    
+    
     //Method to reset the table and clear fields (should be called when appearing the frame)
     public void clientManagerResetAndClear(){
         clientManagerResetTable();
