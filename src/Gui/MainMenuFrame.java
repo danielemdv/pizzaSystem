@@ -36,6 +36,7 @@ public class MainMenuFrame extends javax.swing.JFrame {
         registerClientButton = new javax.swing.JButton();
         logOutButton = new javax.swing.JButton();
         clientManagerButton = new javax.swing.JButton();
+        newOrderButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -60,6 +61,13 @@ public class MainMenuFrame extends javax.swing.JFrame {
             }
         });
 
+        newOrderButton.setText("Alta Orden");
+        newOrderButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newOrderButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -73,7 +81,8 @@ public class MainMenuFrame extends javax.swing.JFrame {
                         .addGap(181, 181, 181)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(clientManagerButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(registerClientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(registerClientButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(newOrderButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(182, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -83,7 +92,9 @@ public class MainMenuFrame extends javax.swing.JFrame {
                 .addComponent(registerClientButton)
                 .addGap(18, 18, 18)
                 .addComponent(clientManagerButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 344, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(newOrderButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 301, Short.MAX_VALUE)
                 .addComponent(logOutButton)
                 .addContainerGap())
         );
@@ -103,10 +114,15 @@ public class MainMenuFrame extends javax.swing.JFrame {
         controller.mainMenuClientManagerButton();
     }//GEN-LAST:event_clientManagerButtonActionPerformed
 
+    private void newOrderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newOrderButtonActionPerformed
+        controller.mainMenuNewOrderButton();
+    }//GEN-LAST:event_newOrderButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clientManagerButton;
     private javax.swing.JButton logOutButton;
+    private javax.swing.JButton newOrderButton;
     private javax.swing.JButton registerClientButton;
     // End of variables declaration//GEN-END:variables
 }

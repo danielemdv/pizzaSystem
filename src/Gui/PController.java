@@ -30,17 +30,24 @@ public class PController {
     //Declaration of int to store value of the ID of the current client that is being edited.
     private int currentClientIDToEdit;
     
+    //Declaration of int to store the ID of the current client we are creating an order for.
+    private int currentClientOrderID;
+    
     //Declaration of all JFrame objects in the GUI
     private LogInFrame LogIn;
     private MainMenuFrame MainMenu;
     private RegisterClientFrame RegisterClient;
     private ClientManagerFrame ClientManager;
     private EditClientFrame EditClient;
+    private SearchClientPhoneFrame SearchClientPhone;
     
     
     //Constructor method
     public PController(DBController dbController){
         this.dbController = dbController;
+        
+        //Initialization of control variable
+        currentClientOrderID = -1;
         
         //Initialization of arrayList
         frames = new ArrayList<>();
@@ -51,6 +58,7 @@ public class PController {
         RegisterClient = new RegisterClientFrame(this);
         ClientManager = new ClientManagerFrame(this);
         EditClient = new EditClientFrame(this);
+        SearchClientPhone = new SearchClientPhoneFrame(this);
         
         //Adding the JFrames to the ArrayList
         frames.add(LogIn);
@@ -58,6 +66,7 @@ public class PController {
         frames.add(RegisterClient);
         frames.add(ClientManager);
         frames.add(EditClient);
+        frames.add(SearchClientPhone);
         
         //Setting all JFrames invisible except for the Log In Frame
         centerAndDisappearFrames();
@@ -125,6 +134,12 @@ public class PController {
         MainMenu.setVisible(false);
         clientManagerResetTable();
         ClientManager.setVisible(true);
+    }
+    
+    public void mainMenuNewOrderButton(){
+        MainMenu.setVisible(false);
+        SearchClientPhone.resetFields();
+        SearchClientPhone.setVisible(true);
     }
     
     
@@ -233,6 +248,50 @@ public class PController {
         }
     }
     
+    //Called when the ClientManager's deleteButton is pressed.
+    public void clientManagerDeleteButton(){
+        //Get the table's selected row
+        int row = ClientManager.clientTable.getSelectedRow();
+        
+        //If there is no selected row, inform the user.
+        if(row == -1)
+        {
+            JOptionPane.showMessageDialog(RegisterClient, "Debe seleccionar un cliente primero.", "Cuidado!" , JOptionPane.INFORMATION_MESSAGE);
+        }
+        else
+        {
+            //There is a row selected, we get the Client's ID from the model.
+            int clientID = (Integer)(ClientManager.clientTable.getModel().getValueAt(row, 0));
+            
+            Client client = dbController.selectClientByID(clientID); //Query the database for the given client.
+            
+            int optionRes = JOptionPane.showConfirmDialog(ClientManager, "Está seguro que desea eliminar al cliente:\n<html><b>" + client.getName() + "</b></html>", "Eliminar", JOptionPane.YES_NO_OPTION);
+            
+            //Check the option
+            if(optionRes == JOptionPane.YES_OPTION) //delete client.
+            {
+                boolean opFlag = dbController.deleteClientByID(clientID);
+                
+                if(opFlag)
+                {
+                    //Reset the table
+                    clientManagerResetAndClear();
+                    JOptionPane.showMessageDialog(ClientManager, "El cliente ha sido eliminado exitosamente", "Éxito!" , JOptionPane.INFORMATION_MESSAGE);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(ClientManager, "El cliente no pudo ser eliminado, hubo un error.", "Error!" , JOptionPane.ERROR_MESSAGE);
+                }
+                
+                
+            }
+            
+        }
+    }
+    
+    
+    
+    
     //Method to reset the table and clear fields (should be called when appearing the frame)
     public void clientManagerResetAndClear(){
         clientManagerResetTable();
@@ -309,6 +368,45 @@ public class PController {
      //--------------------------END EDIT CLIENT FRAME----------------------------------------
     
     
+    //----------------------------SEARCH CLIENT PHONE FRAME--------------------------------------
+    
+    public void searchClientPhoneCancelButton(){
+        SearchClientPhone.setVisible(false);
+        SearchClientPhone.resetFields();
+        MainMenu.setVisible(true);
+    }
+    
+    public void searchClientPhoneSearchButton(){
+        Client resClient = dbController.selectClientByPhone(SearchClientPhone.getPhone());
+        
+        //If we do have a result.
+        if(resClient != null)
+        {
+            SearchClientPhone.setClientLabels(resClient.getName(), resClient.getAddress(), resClient.getPhone());
+            currentClientOrderID = resClient.getUid();
+        }
+        else //If no client matches
+        {
+            JOptionPane.showMessageDialog(SearchClientPhone, "No hay cliente con ese teléfono registrado", "CUIDADO" , JOptionPane.INFORMATION_MESSAGE);
+            SearchClientPhone.resetFields();
+            currentClientOrderID = -1; //Curren client for order is invalid.
+        }
+        
+        
+    }
+    
+    public void searchClientPhoneNextButon(){
+        //If there is no valid client selected for the new order
+        if(currentClientOrderID == -1)
+        {
+            JOptionPane.showMessageDialog(SearchClientPhone, "No hay cliente válido seleccionado", "CUIDADO" , JOptionPane.INFORMATION_MESSAGE);
+        }
+        else
+        {
+            //Appear BuildOrderFrame
+            
+        }
+    }
     
     
     
@@ -316,6 +414,7 @@ public class PController {
     
     
     
+    //----------------------------END SEARCH CLIENT PHONE FRAME--------------------------------------
     
     //------------------------------HELPER METHODS----------------------------
     

@@ -33,7 +33,8 @@
                       <EmptySpace min="-2" pref="181" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="clientManagerButton" max="32767" attributes="0"/>
-                          <Component id="registerClientButton" min="-2" pref="176" max="-2" attributes="0"/>
+                          <Component id="registerClientButton" max="32767" attributes="0"/>
+                          <Component id="newOrderButton" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -48,7 +49,9 @@
               <Component id="registerClientButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="clientManagerButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="344" max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="newOrderButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="301" max="32767" attributes="0"/>
               <Component id="logOutButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -78,6 +81,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clientManagerButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="newOrderButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Alta Orden"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newOrderButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

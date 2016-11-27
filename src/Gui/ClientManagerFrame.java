@@ -86,6 +86,11 @@ public class ClientManagerFrame extends javax.swing.JFrame {
         });
 
         deleteButton.setText("Eliminar");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
 
         backButton.setText("Regresar");
         backButton.addActionListener(new java.awt.event.ActionListener() {
@@ -164,6 +169,10 @@ public class ClientManagerFrame extends javax.swing.JFrame {
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         controller.clientManagerEditButton();
     }//GEN-LAST:event_editButtonActionPerformed
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        controller.clientManagerDeleteButton();
+    }//GEN-LAST:event_deleteButtonActionPerformed
 
     
     private void initRadioButtons(){

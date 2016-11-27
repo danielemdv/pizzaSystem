@@ -22,7 +22,9 @@ public class DBController {
     //Constructor
     public DBController(){
         //Note, this string is different if we run on windows.
-        url = "jdbc:sqlite:/home/daniel/NetBeansProjects/pizzaSystem/src/DBFiles/pizzaTestDB.db";
+        url = "jdbc:sqlite:/home/daniel/NetBeansProjects/pizzaSystem/src/DBFiles/pizzaTestDB.db"; //linux
+        
+        //url = "jdbc:sqlite:/Users/danielespinosa/Documents/Computacion/Semestre 9/Ingenieria de Software/programacion proyecto/pizzaSystem/src/DBFiles/pizzaTestDB.db"; // MAC
     }
     
     //overloaded constructor to pass a custom path to the database.
@@ -218,6 +220,45 @@ public class DBController {
     }
     
     
+    //Method to delete a client given his ID.
+    public boolean deleteClientByID(int id){
+        boolean res = true;
+
+        String sql = "DELETE from client WHERE id = ?";
+ 
+        try (Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            res = false;
+        }
+        return res;
+    
+    
+    }
+    
+        //Method to return a client queried from the db by its Phone.
+    public Client selectClientByPhone(String phone){
+        Client client = null;
+        String sql = "Select * from client where phone = ?";
+
+        try (Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, phone);
+            ResultSet rs = pstmt.executeQuery();
+            
+            if(rs.next()){
+                client = new Client(rs.getInt("id"), rs.getString("name"), rs.getString("address"), rs.getString("phone"));
+            }
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null; //Watch out, we're returning null if we had an SQLException!
+        }
+        return client;
+    }
     
     
     
