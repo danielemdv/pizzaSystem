@@ -8,6 +8,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import DB.DBController;
 import Model.Client;
+import Model.Order;
+import Model.Pizza;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.sql.*;
@@ -32,6 +34,11 @@ public class PController {
     
     //Declaration of int to store the ID of the current client we are creating an order for.
     private int currentClientOrderID;
+    //Variable to keep track of the cost of the order being built.
+    private double currentOrderCost;
+    private Order currentOrder;
+    private ArrayList<String> currentOrderList;
+    
     
     //Declaration of all JFrame objects in the GUI
     private LogInFrame LogIn;
@@ -40,6 +47,8 @@ public class PController {
     private ClientManagerFrame ClientManager;
     private EditClientFrame EditClient;
     private SearchClientPhoneFrame SearchClientPhone;
+    private BuildOrderFrame BuildOrder;
+    private OrderManagerFrame OrderManager;
     
     
     //Constructor method
@@ -48,6 +57,9 @@ public class PController {
         
         //Initialization of control variable
         currentClientOrderID = -1;
+        
+        currentOrder = new Order(-1,-1,-1,-1); //Dummy Initialization of the current Order object.
+        currentOrderList = new ArrayList<>();
         
         //Initialization of arrayList
         frames = new ArrayList<>();
@@ -59,6 +71,8 @@ public class PController {
         ClientManager = new ClientManagerFrame(this);
         EditClient = new EditClientFrame(this);
         SearchClientPhone = new SearchClientPhoneFrame(this);
+        BuildOrder = new BuildOrderFrame(this);
+        OrderManager = new OrderManagerFrame(this);
         
         //Adding the JFrames to the ArrayList
         frames.add(LogIn);
@@ -67,6 +81,8 @@ public class PController {
         frames.add(ClientManager);
         frames.add(EditClient);
         frames.add(SearchClientPhone);
+        frames.add(BuildOrder);
+        frames.add(OrderManager);
         
         //Setting all JFrames invisible except for the Log In Frame
         centerAndDisappearFrames();
@@ -142,6 +158,12 @@ public class PController {
         SearchClientPhone.setVisible(true);
     }
     
+    public void mainMenuOrderManagerButton(){
+        MainMenu.setVisible(false);
+        resetOrderManagerTable();
+        OrderManager.setVisible(true);
+    }
+    
     
     
     //--------------------------END  MAIN MENU FRAME--------------------------------------
@@ -182,7 +204,7 @@ public class PController {
         else if(dbController.addClient(name, address, phone))
         {
             System.out.println("Client registered succesfully");
-            JOptionPane.showMessageDialog(RegisterClient, "Cliente dado de alta exitosamente", "EXITO" , JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(RegisterClient, "Cliente dado de alta exitosamente", "ÉXITO" , JOptionPane.INFORMATION_MESSAGE);
             
             //Disappear Frame and go back to main menu
             RegisterClient.clearFields();
@@ -207,7 +229,7 @@ public class PController {
     
     //Method to populate ClientManager's JTable with all the clients in the DB
     public void clientManagerResetTable(){
-        String[] columnNames = {"ID", "Nombre", "Direccion", "Telefono"}; //should make a final variable (constant) to call it from
+        String[] columnNames = {"ID", "Nombre", "Dirección", "Télefono"}; //should make a final variable (constant) to call it from
         
         ClientManager.setTableModel(buildTableModelFromObjectArray(dbController.selectAllClientsEASY(), columnNames));
         
@@ -231,7 +253,7 @@ public class PController {
         //If there is no selected row, inform the user.
         if(row == -1)
         {
-            JOptionPane.showMessageDialog(RegisterClient, "Debe seleccionar un cliente primero.", "Cuidado!" , JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(ClientManager, "Debe seleccionar un cliente primero.", "Cuidado!" , JOptionPane.INFORMATION_MESSAGE);
         }
         else
         {
@@ -346,7 +368,7 @@ public class PController {
             
             if(updateFlag) //Client was updated succesfully.
             {
-                JOptionPane.showMessageDialog(EditClient, "El cliente fue modificado exitosamente.", "EXITO" , JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(EditClient, "El cliente fue modificado exitosamente.", "ÉXITO" , JOptionPane.INFORMATION_MESSAGE);
                 
                 //Take user back to ClientManager
                 EditClient.clearFields();
@@ -403,9 +425,120 @@ public class PController {
         }
         else
         {
-            //Appear BuildOrderFrame
+            SearchClientPhone.setVisible(false);
+            //Populate BuildOrder's table with the pizzas and make visible.
+            buildOrderResetTable();
+            BuildOrder.resetFields();
+            currentOrder = new Order(currentClientOrderID);
+            currentOrderList = new ArrayList<String>();
+            currentOrderCost = 0;
+            BuildOrder.setVisible(true);
             
         }
+    }
+    
+    
+    
+    //----------------------------END SEARCH CLIENT PHONE FRAME--------------------------------------
+    
+
+    //-----------------------------BUILD ORDER FRAME-------------------------------------------
+    
+    //Set the table with all the pizza entries.
+    public void buildOrderResetTable(){
+        String[] columnNames = {"ID", "Nombre", "Tamaño", "Precio"}; //should make a final variable (constant) to call it from
+        
+        BuildOrder.setTableModel(buildTableModelFromObjectArray(dbController.selectAllPizzas(), columnNames));
+    }
+    
+    public void buildOrderAddButton(){
+        
+        //Get the table's selected row
+        int row = BuildOrder.pizzaTable.getSelectedRow();
+        
+        //If there is no selected row, inform the user.
+        if(row == -1)
+        {
+            JOptionPane.showMessageDialog(BuildOrder, "Debe seleccionar una pizza primero.", "Cuidado!" , JOptionPane.INFORMATION_MESSAGE);
+        }
+        else
+        {
+            //There is a row selected, we get the Pizza's ID from the model.
+            int pizzaID = (Integer)(BuildOrder.pizzaTable.getModel().getValueAt(row, 0));
+            
+            Pizza pizza = dbController.selectPizzaByID(pizzaID);
+            
+            //Build the description and update the current order's helper variables.
+            String desc = pizza.getName() + "  --  " + pizza.getSize() + "  --  " + pizza.getPrice(); //Building a string description.
+            this.currentOrderList.add(desc);
+            this.currentOrder.addPizza(pizzaID);
+            this.currentOrderCost += pizza.getPrice();
+            
+            //Update order description list and cost label.
+            String[] strings = new String[10];
+            strings = currentOrderList.toArray(strings);
+            BuildOrder.setList(strings);
+            BuildOrder.setCostLabel(""+currentOrderCost);
+            
+
+        } 
+    }
+    
+    public void buildOrderCancelButton(){
+        BuildOrder.setVisible(false);
+        MainMenu.setVisible(true);
+    }
+    
+    
+    //Method to create a new ORder entry in the DB and to create the according ordered entries for every pizza assigned to it.
+    public void buildOrderNewOrderButton(){
+        
+        if(currentOrderList.isEmpty())
+        {
+            JOptionPane.showMessageDialog(BuildOrder, "La orden debe llevar mínimo una pizza", "Cuidado!" , JOptionPane.INFORMATION_MESSAGE);
+        }
+        else
+        {
+            //Complete the order with the information needed to make an entry in the DB.
+            currentOrder.completeOrder(System.currentTimeMillis(), currentOrderCost);
+            boolean orderFlag = dbController.addOrder(currentOrder.getClientId(), currentOrder.getTime(), currentOrder.getCompleted(), currentOrder.getCost());
+            if(!orderFlag)
+            {
+                JOptionPane.showMessageDialog(BuildOrder, "La orden no se pudo dar de alta.", "ERROR!" , JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+                //Get the ID of the newly added order entry.
+                int currentOrderId = dbController.selectMaxOrderID();
+                
+                boolean pizzaFlag,aggFlag = true;
+                for(int i = 0; i < currentOrder.getPizzas().size(); i++){
+                    pizzaFlag = dbController.addOrderedPizza(currentOrderId, currentOrder.getPizzas().get(i));
+                    
+                    if(!pizzaFlag){
+                        aggFlag = false;
+                    }
+                }
+                
+                if(!aggFlag)
+                {
+                    JOptionPane.showMessageDialog(BuildOrder, "La orden fue dada de alta pero una o más pizzas no le fueron asignadas", "ERROR!" , JOptionPane.ERROR_MESSAGE);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(BuildOrder, "La orden fue dada de alta exitosamente!", "ÉXITO" , JOptionPane.INFORMATION_MESSAGE);
+                    
+                    BuildOrder.setVisible(false);
+                    MainMenu.setVisible(true);
+                }
+            }
+                
+                
+            
+            
+        }
+        
+        
     }
     
     
@@ -413,8 +546,28 @@ public class PController {
     
     
     
+    //-----------------------------END BUILD ORDER FRAME-------------------------------------------
     
-    //----------------------------END SEARCH CLIENT PHONE FRAME--------------------------------------
+    //-----------------------------ORDER MANAGER FRAME-------------------------------------------
+    
+    
+    public void orderManagerBackButton(){
+        OrderManager.setVisible(false);
+        MainMenu.setVisible(true);
+    }
+    
+    public void resetOrderManagerTable(){
+        String[] columnNames = {"ID", "ID Cliente", "Hora", "Completada", "Costo"}; //should make a final variable (constant) to call it from
+        
+        OrderManager.setTableModel(buildTableModelFromObjectArray(dbController.selectAllOrders(), columnNames));
+    }
+    
+    
+    
+    
+    //-----------------------------END ORDER MANAGER FRAME-------------------------------------------
+    
+    
     
     //------------------------------HELPER METHODS----------------------------
     

@@ -35,10 +35,11 @@
                           <Component id="clientManagerButton" max="32767" attributes="0"/>
                           <Component id="registerClientButton" max="32767" attributes="0"/>
                           <Component id="newOrderButton" max="32767" attributes="0"/>
+                          <Component id="orderManagerButton" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="182" max="32767" attributes="0"/>
+              <EmptySpace pref="179" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -51,7 +52,9 @@
               <Component id="clientManagerButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="newOrderButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="301" max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="orderManagerButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="258" max="32767" attributes="0"/>
               <Component id="logOutButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -89,6 +92,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newOrderButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="orderManagerButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Administrar &#xf3;rdenes"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="orderManagerButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

@@ -37,6 +37,7 @@ public class MainMenuFrame extends javax.swing.JFrame {
         logOutButton = new javax.swing.JButton();
         clientManagerButton = new javax.swing.JButton();
         newOrderButton = new javax.swing.JButton();
+        orderManagerButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,6 +69,13 @@ public class MainMenuFrame extends javax.swing.JFrame {
             }
         });
 
+        orderManagerButton.setText("Administrar órdenes");
+        orderManagerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                orderManagerButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -82,8 +90,9 @@ public class MainMenuFrame extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(clientManagerButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(registerClientButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(newOrderButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(182, Short.MAX_VALUE))
+                            .addComponent(newOrderButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(orderManagerButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(179, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -94,7 +103,9 @@ public class MainMenuFrame extends javax.swing.JFrame {
                 .addComponent(clientManagerButton)
                 .addGap(18, 18, 18)
                 .addComponent(newOrderButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 301, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(orderManagerButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 258, Short.MAX_VALUE)
                 .addComponent(logOutButton)
                 .addContainerGap())
         );
@@ -118,11 +129,16 @@ public class MainMenuFrame extends javax.swing.JFrame {
         controller.mainMenuNewOrderButton();
     }//GEN-LAST:event_newOrderButtonActionPerformed
 
+    private void orderManagerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderManagerButtonActionPerformed
+        controller.mainMenuOrderManagerButton();
+    }//GEN-LAST:event_orderManagerButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clientManagerButton;
     private javax.swing.JButton logOutButton;
     private javax.swing.JButton newOrderButton;
+    private javax.swing.JButton orderManagerButton;
     private javax.swing.JButton registerClientButton;
     // End of variables declaration//GEN-END:variables
 }

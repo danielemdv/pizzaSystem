@@ -6,6 +6,7 @@
 package DB;
 import java.sql.*;
 import Model.Client;
+import Model.Pizza;
 import java.util.ArrayList;
 
 /**
@@ -261,6 +262,172 @@ public class DBController {
     }
     
     
+    //Method to test the feasability of uncomplicating my life and using JTable's following constructor: JTable(Object[][] rowData, Object[] columnNames)
+    public Object[][] selectAllPizzas(){
+        int rowNum = 0;
+        int columnNum = 4; //Using a known value
+        Object[][] res;
+        
+        String sqlCount = "select count('id') as num from pizza;";
+        String sql = "SELECT * FROM pizza;";
+        
+        //TryCatch section to get the number of clients that will be returned in the query.
+        try (Connection conn = connect();
+            Statement stmt  = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sqlCount)){
+            
+            rowNum = rs.getInt("num"); //Get the number of clients that will be returned.
+            
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        
+        res = new Object[rowNum][columnNum];
+        
+        
+        try (Connection conn = connect();
+            Statement stmt  = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)){
+            
+            int currentRow = 0;
+            // loop through the result set
+            while (rs.next()) {
+                
+                for(int i = 1; i <= columnNum; i++){
+                    res[currentRow][i-1] = rs.getObject(i);
+                }
+                currentRow++;
+            }
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null; //Watch out, we're returning null if we had an SQLException!
+        }
+        
+        return res;
+    }
     
+    //Method to return a pizza queried from the db by its ID.
+    public Pizza selectPizzaByID(int id){
+        Pizza pizza = null;
+        String sql = "Select * from pizza where id = ?";
+
+        try (Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            
+            if(rs.next()){
+                pizza = new Pizza(id, rs.getString("name"), rs.getString("size").charAt(0), rs.getDouble("price"));
+            }
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null; //Watch out, we're returning null if we had an SQLException!
+        }
+        return pizza;
+    }
+    
+    
+    public boolean addOrder(int clientId, double time, int completed, double cost){
+        boolean res = true;
+
+        String sql = "INSERT INTO ORDEN (CLIENT_ID, TIME, COMPLETED, COST) VALUES(?,?,?,?)";
+ 
+        try (Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, clientId);
+            pstmt.setDouble(2, time);
+            pstmt.setInt(3, completed);
+            pstmt.setDouble(4, cost);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            res = false;
+        }
+        return res;
+    }
+    
+    public boolean addOrderedPizza(int orderId, int pizzaId){
+        boolean res = true;
+
+        String sql = "INSERT INTO ORDERED (ORDEN_ID, PIZZA_ID) VALUES(?,?)";
+ 
+        try (Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, orderId);
+            pstmt.setInt(2, pizzaId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            res = false;
+        }
+        return res;
+    }
+    
+    public int selectMaxOrderID(){
+        int res = 0;
+        String sql = "select max(id) as max from orden";
+
+        try (Connection conn = this.connect();
+            Statement stmt  = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)){
+            
+            res = rs.getInt("max"); //Get the number of clients that will be returned.
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return -1; //Watch out, we're returning -1 if we had an SQLException!
+        }
+        return res;
+    }
+    
+    public Object[][] selectAllOrders(){
+        int rowNum = 0;
+        int columnNum = 5; //Using a known value
+        Object[][] res;
+        
+        String sqlCount = "select count('id') as num from orden;";
+        String sql = "SELECT * FROM orden;";
+        
+        //TryCatch section to get the number of orders that will be returned in the query.
+        try (Connection conn = connect();
+            Statement stmt  = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sqlCount)){
+            
+            rowNum = rs.getInt("num"); //Get the number of orders  that will be returned.
+            
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        
+        res = new Object[rowNum][columnNum];
+        
+        
+        try (Connection conn = connect();
+            Statement stmt  = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)){
+            
+            int currentRow = 0;
+            // loop through the result set
+            while (rs.next()) {
+                
+                for(int i = 1; i <= columnNum; i++){
+                    res[currentRow][i-1] = rs.getObject(i);
+                }
+                currentRow++;
+            }
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null; //Watch out, we're returning null if we had an SQLException!
+        }
+        
+        return res;
+    }
     
 }
