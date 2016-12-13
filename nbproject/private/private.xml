@@ -3,23 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/home/daniel/NetBeansProjects/pizzaSystem/src/Model/Foodstuff.java</file>
-            <file>file:/home/daniel/NetBeansProjects/pizzaSystem/src/DB/SQLiteJDBCConnection.java</file>
-            <file>file:/home/daniel/NetBeansProjects/pizzaSystem/src/Gui/RegisterClientFrame.java</file>
-            <file>file:/home/daniel/NetBeansProjects/pizzaSystem/src/Gui/MainMenuFrame.java</file>
-            <file>file:/home/daniel/NetBeansProjects/pizzaSystem/src/DB/DBController.java</file>
-            <file>file:/home/daniel/NetBeansProjects/pizzaSystem/src/Gui/EditClientFrame.java</file>
-            <file>file:/home/daniel/NetBeansProjects/pizzaSystem/src/Gui/LogInFrame.java</file>
-            <file>file:/home/daniel/NetBeansProjects/pizzaSystem/src/Model/Client.java</file>
-            <file>file:/home/daniel/NetBeansProjects/pizzaSystem/src/Model/Order.java</file>
-            <file>file:/home/daniel/NetBeansProjects/pizzaSystem/src/Gui/ClientManagerFrame.java</file>
-            <file>file:/home/daniel/NetBeansProjects/pizzaSystem/src/pizzasystem/PizzaSystem.java</file>
-            <file>file:/home/daniel/NetBeansProjects/pizzaSystem/src/Gui/PController.java</file>
-=======
             <file>file:/Users/danielespinosa/Documents/Computacion/Semestre%209/Ingenieria%20de%20Software/programacion%20proyecto/pizzaSystem/src/DB/DBController.java</file>
+            <file>file:/Users/danielespinosa/Documents/Computacion/Semestre%209/Ingenieria%20de%20Software/programacion%20proyecto/pizzaSystem/src/Gui/ClientManagerFrame.java</file>
+            <file>file:/Users/danielespinosa/Documents/Computacion/Semestre%209/Ingenieria%20de%20Software/programacion%20proyecto/pizzaSystem/src/Gui/PController.java</file>
+            <file>file:/Users/danielespinosa/Documents/Computacion/Semestre%209/Ingenieria%20de%20Software/programacion%20proyecto/pizzaSystem/src/DB/SQLiteJDBCConnection.java</file>
             <file>file:/Users/danielespinosa/Documents/Computacion/Semestre%209/Ingenieria%20de%20Software/programacion%20proyecto/pizzaSystem/src/pizzasystem/PizzaSystem.java</file>
->>>>>>> 6af1c719d0840e6cf93b0054d33e97cbe61426b0
         </group>
     </open-files>
 </project-private>
